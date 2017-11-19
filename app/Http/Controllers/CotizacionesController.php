@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cotizaciones;
+use GuzzleHttp;
 
 class CotizacionesController extends Controller
 {
@@ -90,6 +91,24 @@ class CotizacionesController extends Controller
                                  ->where('moneda', $request->moneda)
                                  ->orderBy('created_at','asc')
                                  ->first();
-      return $cotizacion->cotizacion;
+      //return $cotizacion->cotizacion;
+      return response()->json([
+          'method' => 'cotizacion'
+      ]);
+    }
+
+    public function updateCotizaciones(Request $request)
+    {
+      $moneda = 'BOB';
+      $client  =  new  GuzzleHttp\Client ([ 'base_uri'  => config('global.apiCotizacion')]);
+      $response  =  $client -> request ( 'GET' , '?app_id='.config('global.idApiCotizacion'));
+      $body  =  $response -> getBody ();
+      $body = json_decode($body, true);
+      $body = (object)$body;
+      $cotizacion = new Cotizaciones();
+      $cotizacion->base = $body->base;
+      $cotizacion->moneda = $moneda;
+      $cotizacion->cotizacion = $body->rates[$moneda];
+      $cotizacion->save();
     }
 }

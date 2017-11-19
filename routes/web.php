@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 Route::resource('cotizaciones', 'CotizacionesController');
 Route::get('getCotizacion', 'CotizacionesController@getCotizacion')->name('getCotizacion');
+Route::get('updateCotizaciones', 'CotizacionesController@updateCotizaciones')->name('updateCotizaciones');
+Route::get('index', 'CotizacionesController@index')->name('index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
