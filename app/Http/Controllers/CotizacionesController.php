@@ -93,7 +93,7 @@ class CotizacionesController extends Controller
                                  ->first();
       //return $cotizacion->cotizacion;
       return response()->json([
-          'method' => 'cotizacion'
+          'cotizacion' => $cotizacion->cotizacion
       ]);
     }
 
